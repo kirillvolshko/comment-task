@@ -6,14 +6,16 @@ import { useDispatch, useSelector } from 'react-redux';
 function CommentsList() {
   const activeItemId = useSelector(state => state.active);
   const [comments, setComments] = useState([]);
-
+  
   useEffect(() => {
     const storedComments = JSON.parse(localStorage.getItem('commentsArr')) || [];
     setComments(storedComments);
   }, []);
 
   const filteredComments = comments.filter(comment => comment.idItem === activeItemId);
-
+  if (!activeItemId) {
+    return null; 
+  }
   return (
     <div className='comment-list-container'>
       {filteredComments.map((comment, index) => (

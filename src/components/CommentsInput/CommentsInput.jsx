@@ -33,6 +33,18 @@ function CommentsInput() {
     localStorage.setItem('commentsArr', JSON.stringify(updatedComments));
     setComments(updatedComments);
 
+    const storedItems = JSON.parse(localStorage.getItem('itemsArr'));
+    const updatedItems = storedItems.map(item => {
+    if (item.id === activeItem) {
+      return {
+        ...item,
+        countCom: (comments.filter(comment => comment.idItem === activeItem).length) + 1,
+      };
+    }
+    return item;
+  });
+  localStorage.setItem('itemsArr', JSON.stringify(updatedItems));
+
   };
 
   return (

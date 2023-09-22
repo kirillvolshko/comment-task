@@ -12,6 +12,10 @@ function ItemsList() {
   useEffect(() => {
     const storedItems = JSON.parse(localStorage.getItem('itemsArr')) || [];
     setItems(storedItems);
+    if (storedItems.length > 0) {
+      setActiveItem(storedItems[0].id);
+      dispatch({ type: 'ACTIVE_COM', payload: storedItems[0].id});
+    }
   }, []);
 
   useEffect(() => {
@@ -29,18 +33,23 @@ function ItemsList() {
         return updatedItems;
       });
     }
-  }, [item, dispatch]);
+  }, [item]);
 
   const deleteCard = (id) => {
     const updatedItems = (items.filter((item)=>item.id !== id))
     setItems(updatedItems)
     localStorage.setItem('itemsArr', JSON.stringify(updatedItems));
-    //dispatch({ type: 'SET_ACTIVE', payload: itemId });
+
+    const storedComments = JSON.parse(localStorage.getItem('commentsArr')) || [];
+    const updatedComments = storedComments.filter((comment) => comment.idItem !== id);
+    localStorage.setItem('commentsArr', JSON.stringify(updatedComments));
+    
   }
 
   const ActiveItem = (itemId) => {
     setActiveItem(itemId);
     dispatch({ type: 'ACTIVE_COM', payload: itemId});
+    
   }
   return (
     <>
